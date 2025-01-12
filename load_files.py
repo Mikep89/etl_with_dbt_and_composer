@@ -5,7 +5,7 @@ from airflow.models import Variable
 from airflow.utils.task_group import TaskGroup
 from airflow import DAG
 from airflow.decorators import task, dag
-from airflow.providers.google.cloud.transfers import gcs_to_bigquery
+from airflow.providers.google.cloud.transfers.gcs_to_bigquery import GCSToBigQueryOperator
 
 @dag(dag_id = 'load_lmia_file',
 start_date = pendulum.datetime(2025,1,12,tz='UTC'),
@@ -24,7 +24,7 @@ def load_files():
         for quarter in range(1,4):
             get_raw = get_raw_file.override(task_id = f'get_raw_q{quarter}')(quarter)
             load_raw_to_csv = save_lmia_df_as_csv.override(task_id = f'save_lmia_df_as_csv_q{quarter}')("{{ti.xcomm_pull('raw_data.get_raw_q{quarter})}}", quarter)
-            load_csv_to_bq = gcs_to_bigquery(
+            load_csv_to_bq = GCSToBigQueryOperator(
                 bucket = Variable('test_gs_bucket'),
                 source_object = '/transformed_csv/lmia_q{quarter}.csv',
                 destination_project_database_table = 'lmia.lmia_applications_raw',
