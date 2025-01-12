@@ -13,19 +13,15 @@ schedule = "@once")
 def load_files():
     @task(task_id = 'get_raw_file')
     def get_raw_file(quarter: int) -> pd.DataFrame:
-        return (pd.read_excel(Variable.get('test_gs_bucket') + f'raw_excel_lmia/tfwp_2024q{quarter}_pos_en.xlsx', skipfooter=8)
-                .to_json())
-    
+        bucket = Variable.get('test_gs_bucket')
+        return (pd.read_excel(bucket + f'raw_excel_lmia/tfwp_2024q{quarter}_pos_en.xlsx', skipfooter=8)
+                .to_csv(bucket + f'transformed_csv/lmia_q{quarter}.csv', index = False))
 
-    @task(task_id = 'save_lmia_df_as_csv')
-    def save_lmia_df_as_csv(df, quarter: int) -> None:
-        pd.read_json(df).to_csv(Variable.get('test_gs_bucket') + f'transformed_csv/lmia_q{quarter}.csv', index = False)
 
 
     with TaskGroup('load_data') as raw:
         for quarter in range(1,5):
             get_raw = get_raw_file.override(task_id = f'get_raw_q{quarter}')(quarter)
-            load_raw_to_csv = save_lmia_df_as_csv.override(task_id = f'save_lmia_df_as_csv_q{quarter}')("{{ti.xcomm_pull('raw_data.get_raw_q{quarter})}}", quarter)
             load_csv_to_bq = GCSToBigQueryOperator(
                 task_id = f"load_csv_to_bq_q{quarter}",
                 bucket = Variable.get('test_gs_bucket'),
@@ -35,6 +31,6 @@ def load_files():
                 write_disposition = 'WRITE_APPEND',
                 autodetect = True # being explicit here although this is true by default as per docs
             )
-            get_raw >> load_raw_to_csv >> load_csv_to_bq
+            get_raw  >> load_csv_to_bq
     
 load_files()
