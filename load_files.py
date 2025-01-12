@@ -27,7 +27,7 @@ def load_files():
             load_csv_to_bq = GCSToBigQueryOperator(
                 bucket = Variable('test_gs_bucket'),
                 source_objects = '/transformed_csv/lmia_q{quarter}.csv',
-                destination_project_database_table = 'lmia.lmia_applications_raw',
+                destination_project_dataset_table = 'lmia.lmia_applications_raw',
                 source_format = 'csv',
                 write_disposition = 'WRITE_APPEND',
                 autodetect = True # being explicit here although this is true by default as per docs
