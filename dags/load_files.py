@@ -23,7 +23,7 @@ def load_files():
     with TaskGroup('load_data') as raw:
         for quarter in range(1,4):
             get_raw = get_raw_file.override(task_id = f'get_raw_q{quarter}')(quarter)
-            load_raw_to_csv = save_lmia_df_as_csv.override(task_id = f'save_lmia_df_as_csv_q{quarter}')("{{ti.xcomm_pull('raw_data.get_raw_q{quarter})}}")
+            load_raw_to_csv = save_lmia_df_as_csv.override(task_id = f'save_lmia_df_as_csv_q{quarter}')("{{ti.xcomm_pull('raw_data.get_raw_q{quarter})}}", quarter)
             load_csv_to_bq = gcs_to_bigquery(
                 bucket = Variable('test_gs_bucket'),
                 source_object = '/transformed_csv/lmia_q{quarter}.csv',
