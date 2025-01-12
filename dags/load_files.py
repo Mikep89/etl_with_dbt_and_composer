@@ -25,10 +25,11 @@ schedule = "@once"
             get_raw = get_raw_file.override(task_id = f'get_raw_q{quarter}')(quarter)
             load_raw_to_csv = save_lmia_df_as_csv.override(task_id = f'save_lmia_df_as_csv_q{quarter}')("{{ti.xcomm_pull('raw_data.get_raw_q{quarter})}}")
             load_csv_to_bq = gcs_to_bigquery(
-                bucket = Variable('tst_gs_bucket'),
+                bucket = Variable('test_gs_bucket'),
                 source_object = '/transformed_csv/lmia_q{quarter}.csv',
                 destination_project_database_table = 'lmia.lmia_applications_raw',
                 source_format = 'csv',
+                write_disposition = 'WRITE_APPEND',
                 autodetect = True # being explicit here although this is true by default as per docs
             )
             get_raw >> load_raw_to_csv >> load_csv_to_bq
