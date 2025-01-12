@@ -1,5 +1,5 @@
 import pandas as pd
-import datetime
+import pendulum
 
 from airflow.models import Variable
 from airflow.utils.task_group import TaskGroup
@@ -8,7 +8,7 @@ from airflow.decorators import task, dag
 from airflow.providers.google.cloud.transfers import gcs_to_bigquery
 
 @dag(dag_id = 'load_lmia_file',
-start_date = datetime.date(2025,1,11),
+start_date = pendulum.datetime(2025,1,12,tz='UTC'),
 schedule = "@once")
 def load_files():
     @task(task_id = 'get_raw_file')
