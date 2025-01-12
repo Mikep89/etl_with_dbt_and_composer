@@ -13,7 +13,7 @@ schedule = "@once")
 def load_files():
     @task(task_id = 'get_raw_file')
     def get_raw_file(quarter: int) -> pd.DataFrame:
-        return pd.read_excel(Variable.get('test_gs_bucket') + f'raw_excel_lmia/tfwp_2024q{quarter}_pos_en.xlsx', sheet_name='2024_POS_EN', skipfooter=8)
+        return pd.read_excel(Variable.get('test_gs_bucket') + f'raw_excel_lmia/tfwp_2024q{quarter}_pos_en.xlsx', skipfooter=8)
 
     @task(task_id = 'save_lmia_df_as_csv')
     def save_lmia_df_as_csv(df, quarter: int) -> None:
@@ -21,7 +21,7 @@ def load_files():
 
 
     with TaskGroup('load_data') as raw:
-        for quarter in range(1,4):
+        for quarter in range(1,5):
             get_raw = get_raw_file.override(task_id = f'get_raw_q{quarter}')(quarter)
             load_raw_to_csv = save_lmia_df_as_csv.override(task_id = f'save_lmia_df_as_csv_q{quarter}')("{{ti.xcomm_pull('raw_data.get_raw_q{quarter})}}", quarter)
             load_csv_to_bq = GCSToBigQueryOperator(
