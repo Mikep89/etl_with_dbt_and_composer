@@ -25,6 +25,7 @@ def load_files():
             get_raw = get_raw_file.override(task_id = f'get_raw_q{quarter}')(quarter)
             load_raw_to_csv = save_lmia_df_as_csv.override(task_id = f'save_lmia_df_as_csv_q{quarter}')("{{ti.xcomm_pull('raw_data.get_raw_q{quarter})}}", quarter)
             load_csv_to_bq = GCSToBigQueryOperator(
+                task_id = f"load_csv_to_bq_q{quarter}",
                 bucket = Variable('test_gs_bucket'),
                 source_objects = '/transformed_csv/lmia_q{quarter}.csv',
                 destination_project_dataset_table = 'lmia.lmia_applications_raw',
