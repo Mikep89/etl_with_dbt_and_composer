@@ -13,11 +13,13 @@ schedule = "@once")
 def load_files():
     @task(task_id = 'get_raw_file')
     def get_raw_file(quarter: int) -> pd.DataFrame:
-        return pd.read_excel(Variable.get('test_gs_bucket') + f'raw_excel_lmia/tfwp_2024q{quarter}_pos_en.xlsx', skipfooter=8)
+        return (pd.read_excel(Variable.get('test_gs_bucket') + f'raw_excel_lmia/tfwp_2024q{quarter}_pos_en.xlsx', skipfooter=8)
+                .to_json())
+    
 
     @task(task_id = 'save_lmia_df_as_csv')
     def save_lmia_df_as_csv(df, quarter: int) -> None:
-        df.to_csv(Variable.get('test_gs_bucket') + f'transformed_csv/lmia_q{quarter}.csv', index = False)
+        pd.read_json(df).to_csv(Variable.get('test_gs_bucket') + f'transformed_csv/lmia_q{quarter}.csv', index = False)
 
 
     with TaskGroup('load_data') as raw:
