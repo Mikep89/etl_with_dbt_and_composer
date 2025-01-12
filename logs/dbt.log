@@ -1,0 +1,64 @@
+[0m00:33:21.231837 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x73d0b8c894c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x73d0b77d7cb0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x73d0b77d43e0>]}
+
+
+============================== 00:33:21.236333 | 0a502096-77f0-421a-b266-4a914d00f4c2 ==============================
+[0m00:33:21.236333 [info ] [MainThread]: Running with dbt=1.9.1
+[0m00:33:21.237130 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'debug': 'False', 'version_check': 'True', 'log_path': 'logs', 'fail_fast': 'False', 'profiles_dir': '/home/codespace/.dbt', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'empty': 'None', 'log_format': 'default', 'static_parser': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'introspect': 'True', 'target_path': 'None', 'invocation_command': 'dbt init lmia', 'send_anonymous_usage_stats': 'True'}
+[0m00:33:21.247059 [warn ] [MainThread]: [ConfigFolderDirectory]: Unable to parse logging event dictionary. Failed to parse dir field: expected string or bytes-like object, got 'PosixPath'.. Dictionary: {'dir': PosixPath('/home/codespace/.dbt')}
+[0m00:33:21.247653 [info ] [MainThread]: Creating dbt configuration folder at 
+[0m00:33:21.249095 [debug] [MainThread]: Starter project path: /usr/local/python/3.12.1/lib/python3.12/site-packages/dbt/include/starter_project
+[0m00:33:21.254079 [info ] [MainThread]: 
+Your new dbt project "lmia" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m00:33:21.254825 [info ] [MainThread]: Setting up your profile.
+[0m00:33:21.255846 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No adapters available. Learn how to install an adapter by going to https://docs.getdbt.com/docs/connect-adapters#install-using-the-cli
+[0m00:33:21.257232 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": false, "command_wall_clock_time": 0.082673036, "process_in_blocks": "27408", "process_kernel_time": 0.259211, "process_mem_max_rss": "89224", "process_out_blocks": "64", "process_user_time": 1.389213}
+[0m00:33:21.257825 [debug] [MainThread]: Command `dbt init` failed at 00:33:21.257710 after 0.08 seconds
+[0m00:33:21.258331 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x73d0b7c24800>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x73d0b7af7ef0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x73d0b8c894c0>]}
+[0m00:33:21.258864 [debug] [MainThread]: Flushing usage events
+[0m00:33:21.284940 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m00:37:45.596788 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x73e8893a3d70>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x73e8893a2870>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x73e88a8cb770>]}
+
+
+============================== 00:37:45.600152 | f69fcc4a-b912-4a3e-8566-9a82aad2c892 ==============================
+[0m00:37:45.600152 [info ] [MainThread]: Running with dbt=1.9.1
+[0m00:37:45.600951 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'fail_fast': 'False', 'debug': 'False', 'log_path': 'logs', 'version_check': 'True', 'profiles_dir': '/home/codespace/.dbt', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'None', 'quiet': 'False', 'no_print': 'None', 'log_format': 'default', 'static_parser': 'True', 'invocation_command': 'dbt init lmia', 'introspect': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'send_anonymous_usage_stats': 'True'}
+[0m00:37:45.611445 [debug] [MainThread]: Starter project path: /usr/local/python/3.12.1/lib/python3.12/site-packages/dbt/include/starter_project
+[0m00:37:45.615838 [info ] [MainThread]: 
+Your new dbt project "lmia" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m00:37:45.616427 [info ] [MainThread]: Setting up your profile.
+[0m00:40:13.978148 [info ] [MainThread]: Profile lmia written to /home/codespace/.dbt/profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m00:40:13.980512 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 148.43996, "process_in_blocks": "74712", "process_kernel_time": 0.415822, "process_mem_max_rss": "201936", "process_out_blocks": "88", "process_user_time": 2.313782}
+[0m00:40:13.981263 [debug] [MainThread]: Command `dbt init` succeeded at 00:40:13.981132 after 148.44 seconds
+[0m00:40:13.981796 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x73e888a3ab70>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x73e8802d6b40>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x73e8888b4a10>]}
+[0m00:40:13.982495 [debug] [MainThread]: Flushing usage events
+[0m00:40:14.056697 [debug] [MainThread]: An error was encountered while trying to flush usage events
