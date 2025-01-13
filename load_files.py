@@ -15,6 +15,14 @@ def load_files():
     def get_raw_file(quarter: int) -> None:
         bucket = "gs://" + Variable.get('test_gs_bucket') + '/'
         (pd.read_excel(bucket + f'raw_excel_lmia/tfwp_2024q{quarter}_pos_en.xlsx', skipfooter=8, skiprows=1)
+         .rename(columns = {'Province/Territory' : 'province',
+                            'Program Stream': 'program_stream',
+                            'Employer': 'employer',
+                            'Address': 'address',
+                            'Occupation': 'occupation',
+                            'Incorporate Status': 'incoperation_status',
+                            'Approved LMIAs': 'approved_lmia_count',
+                            'Approved Positions': 'approved_positions'})
                 .to_csv(bucket + f'transformed_csv/lmia_q{quarter}.csv', index = False))
 
 
