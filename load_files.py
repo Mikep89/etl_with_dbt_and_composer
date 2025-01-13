@@ -6,6 +6,7 @@ from airflow.utils.task_group import TaskGroup
 from airflow import DAG
 from airflow.decorators import task, dag
 from airflow.providers.google.cloud.transfers.gcs_to_bigquery import GCSToBigQueryOperator
+from airflow.operators.bash import BashOperator
 
 @dag(dag_id = 'load_lmia_file',
 start_date = pendulum.datetime(2025,1,12,tz='UTC'),
@@ -23,12 +24,13 @@ def load_files():
                             'Incorporate Status': 'incoperation_status',
                             'Approved LMIAs': 'approved_lmia_count',
                             'Approved Positions': 'approved_positions'})
+        .assign(period = "2024-Q"+ str(quarter))
                 .to_csv(bucket + f'transformed_csv/lmia_q{quarter}.csv', index = False))
 
 
 
     with TaskGroup('load_data') as raw:
-        for quarter in range(1,3):
+        for quarter in range(1,4):
             get_raw = get_raw_file.override(task_id = f'get_raw_q{quarter}')(quarter)
             load_csv_to_bq = GCSToBigQueryOperator(
                 task_id = f"load_csv_to_bq_q{quarter}",
