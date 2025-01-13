@@ -1,5 +1,4 @@
-with lmia as (
-    SELECT period as period,
+SELECT period as period,
     program_stream as stream, 
     employer as employer, 
     split(address, ',')[0] as city, 
@@ -9,9 +8,6 @@ with lmia as (
     regexp_substr(occupation, '(?:-)(.*)', 1) as occupation_name,
     approved_lmia_count as approved_lmias,
     approved_positions as approved_positions
-    FROM lmia.lmia_applications_raw
-    WHERE occupation is not null
-    and address is not null
-)
-
-select * from lmia
+FROM lmia.lmia_applications_raw
+WHERE occupation is not null
+and address is not null
