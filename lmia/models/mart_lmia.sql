@@ -20,6 +20,7 @@ with lmia_by_company as (
     group by company
 )
 
-select * from lmia_by_company
-select * from lmia_by_province
-select * from lmia_by_quarter
+select * from clean_lmia;
+select * from lmia_by_company;
+select * from lmia_by_province;
+select * from lmia_by_quarter;
