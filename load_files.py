@@ -13,7 +13,7 @@ schedule = "@once")
 def load_files():
     @task(task_id = 'get_raw_file')
     def get_raw_file(quarter: int) -> None:
-        bucket = Variable.get('test_gs_bucket')
+        bucket = "gs://" + Variable.get('test_gs_bucket')
         (pd.read_excel(bucket + f'raw_excel_lmia/tfwp_2024q{quarter}_pos_en.xlsx', skipfooter=8)
                 .to_csv(bucket + f'transformed_csv/lmia_q{quarter}.csv', index = False))
 
@@ -25,7 +25,7 @@ def load_files():
             load_csv_to_bq = GCSToBigQueryOperator(
                 task_id = f"load_csv_to_bq_q{quarter}",
                 bucket = Variable.get('test_gs_bucket'),
-                source_objects = '/transformed_csv/lmia_q{quarter}.csv',
+                source_objects = f'/transformed_csv/lmia_q{quarter}.csv',
                 destination_project_dataset_table = 'lmia.lmia_applications_raw',
                 source_format = 'csv',
                 write_disposition = 'WRITE_APPEND',
