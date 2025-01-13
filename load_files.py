@@ -20,7 +20,7 @@ def load_files():
 
 
     with TaskGroup('load_data') as raw:
-        for quarter in range(1,5):
+        for quarter in range(1,3):
             get_raw = get_raw_file.override(task_id = f'get_raw_q{quarter}')(quarter)
             load_csv_to_bq = GCSToBigQueryOperator(
                 task_id = f"load_csv_to_bq_q{quarter}",
