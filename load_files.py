@@ -25,7 +25,7 @@ def load_files():
             load_csv_to_bq = GCSToBigQueryOperator(
                 task_id = f"load_csv_to_bq_q{quarter}",
                 bucket = Variable.get('test_gs_bucket'),
-                source_objects = f'/transformed_csv/lmia_q{quarter}.csv',
+                source_objects = f'transformed_csv/lmia_q{quarter}.csv',
                 destination_project_dataset_table = 'lmia.lmia_applications_raw',
                 source_format = 'csv',
                 write_disposition = 'WRITE_APPEND',
