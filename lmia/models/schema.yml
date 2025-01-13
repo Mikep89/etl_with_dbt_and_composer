@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: lmia
+    description: "table containing the quarterly applications to the labour market intake assessments used by the government of canada before they can hire temporary foreign workers"
+  - name: period
+    description: "The quarter of the report"
+  - name: stream
+    description: "The category of wage stream that the application was made for"
+  - name: employer
+    description: "The name of the employer"
+  - name: city
+    description: "The city that the employer resides in"
+  - name: postal_code
+    description: "The employer's postal code"
+  - name: province
+    description: "the province that the employer is located in"
+  - name: occupation_code
+    description: "The occupation/noc code of the applied for LMIA"
+  - name: occupation_name
+    description: "The name of the occupation for which the LMIA"
+  - name: approved_lmias
+    description: "The number of LMIA applications that were submitted and approved"
+    tests:
+      - not null
+  - name: approved_positions
+    description: "The number of positions that were created as a result of the LMIA's submitted"
+    tests:
+      - not null
