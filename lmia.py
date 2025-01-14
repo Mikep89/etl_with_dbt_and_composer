@@ -6,7 +6,7 @@ from airflow.utils.task_group import TaskGroup
 from airflow import DAG
 from airflow.decorators import task, dag
 from airflow.providers.google.cloud.transfers.gcs_to_bigquery import GCSToBigQueryOperator
-from airflow.operators.bash import BashOperator
+from airflow.providers.docker.operators.docker import DockerOperator
 
 DBT_PROJECT_PATH = Variable.get('dbt-lmia-path')
 DBT_PROFILE_PATH = Variable.get('dbt-profile-path')
@@ -46,28 +46,12 @@ def load_files():
                 )
                 get_raw  >> load_csv_to_bq
 
-    def dbt_tg():
-        with TaskGroup('dbt') as dbt:
-
-            run_dbt = BashOperator(task_id = 'run-dbt',
-                                bash_command= (
-                                                f'cd "{DBT_PROJECT_PATH}" && '
-                                                f'dbt run --profiles-dir {DBT_PROFILE_PATH}'
-                                                ),
-                                env = {'DBT_PROFILES_DIR': DBT_PROFILE_PATH,
-                                        'GOOGLE_APPLICATION_CREDENTIALS': GCP_CREDENTIAL}
-                                )
-
-            test_dbt_output = BashOperator(task_id = 'test-dbt',
-                                bash_command= (f'export DBT_PROFILES_DIR = "{DBT_PROFILE_PATH}")'
-                                                f'cd "{DBT_PROJECT_PATH}" &&'
-                                                f'dbt test --profiles-dir {DBT_PROFILE_PATH}'
-                                                ),
-                                    env = {'DBT_PROFILES_DIR': DBT_PROFILE_PATH,
-                                        'GOOGLE_APPLICATION_CREDENTIALS': GCP_CREDENTIAL
-                                    })
-            run_dbt >> test_dbt_output
+    dbt = DockerOperator(
+        task_id = 'run_dbt',
+        image = "mikepineau89/dbt-run",
+        envionment = {'PROJECT_DIR':DBT_PROJECT_PATH}
+    )
         
-    load_data_tg >> dbt_tg
+    load_data_tg >> dbt
 
 load_files()
