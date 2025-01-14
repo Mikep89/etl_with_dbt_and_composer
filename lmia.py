@@ -49,7 +49,6 @@ def load_files():
     dbt = DockerOperator(
         task_id = 'run_dbt',
         image = "mikepineau89/dbt-run",
-        envionment = {'PROJECT_DIR':DBT_PROJECT_PATH}
     )
         
     load_data_tg >> dbt
