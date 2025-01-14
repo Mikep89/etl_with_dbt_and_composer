@@ -8,6 +8,10 @@ from airflow.decorators import task, dag
 from airflow.providers.google.cloud.transfers.gcs_to_bigquery import GCSToBigQueryOperator
 from airflow.operators.bash import BashOperator
 
+DBT_PROJECT_PATH = Variable.get('dbt-lmia-path')
+DBT_PROFILE_PATH = Variable.get('dbt-profile-path')
+GCP_CREDENTIAL = Variable.get('gcp-credential-location')
+
 @dag(dag_id = 'load_lmia_file',
 start_date = pendulum.datetime(2025,1,12,tz='UTC'),
 schedule = "@once")
@@ -27,8 +31,6 @@ def load_files():
         .assign(period = "2024-Q"+ str(quarter))
                 .to_csv(bucket + f'transformed_csv/lmia_q{quarter}.csv', index = False))
 
-
-
     with TaskGroup('load_data') as raw:
         for quarter in range(1,4):
             get_raw = get_raw_file.override(task_id = f'get_raw_q{quarter}')(quarter)
@@ -42,5 +44,24 @@ def load_files():
                 autodetect = True # being explicit here although this is true by default as per docs
             )
             get_raw  >> load_csv_to_bq
+
+
+    run_dbt = BashOperator(task_id = 'run-dbt',
+                        bash_command= (
+                                        f'cd "{DBT_PROJECT_PATH}" && '
+                                        f'dbt run --profiles-dir {DBT_PROFILE_PATH}'
+                                        ),
+                        env = {'DBT_PROFILES_DIR': DBT_PROFILE_PATH,
+                                'GOOGLE_APPLICATION_CREDENTIALS': GCP_CREDENTIAL}
+                        )
+
+    test_dbt_output = BashOperator(task_id = 'test-dbt',
+                        bash_command= (f'export DBT_PROFILES_DIR = "{DBT_PROFILE_PATH}")'
+                                        f'cd "{DBT_PROJECT_PATH}" &&'
+                                        f'dbt test --profiles-dir {DBT_PROFILE_PATH}'
+                                        ),
+                            env = {'DBT_PROFILES_DIR': DBT_PROFILE_PATH,
+                                'GOOGLE_APPLICATION_CREDENTIALS': GCP_CREDENTIAL
+                            })
     
-load_files()
+    load_files >> run_dbt >> test_dbt_output

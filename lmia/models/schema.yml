@@ -6,8 +6,14 @@ models:
     columns:
       - name: period
         description: The quarter of the report
+        tests:
+          - accepted_values:
+              values: ['2024-Q1','2024-Q2','2024-Q3']
       - name: stream
         description: The category of wage stream that the application was made for
+        tests:
+          - accepted_values:
+              values: ['Global Talent Stream', 'High Wage', 'Low Wage', 'Primary Agriculture', 'Permanent Resident Only']
       - name: employer
         description: The name of the employer
       - name: city
@@ -16,6 +22,22 @@ models:
         description: The employer's postal code
       - name: province
         description: the province that the employer is located in
+        tests:
+          - accepted_values:
+              values: ['Newfoundland and Labrador',
+                      'Prince Edward Island',
+                      'Nova Scotia',
+                      'New Brunswick',
+                      'Quebec',
+                      'Ontario',
+                      'Manitoba',
+                      'Saskatchewan',
+                      'Alberta',
+                      'British Columbia',
+                      'Northwest Territories',
+                      'Yukon',
+                      'Nunavut',
+                      'Employers carrying on business in Canada with Head Office outside of Canada']
       - name: occupation_code
         description: The occupation/noc code of the applied for LMIA
       - name: occupation_name
@@ -23,16 +45,18 @@ models:
       - name: approved_lmias
         description: The number of LMIA applications that were submitted and approved
         tests:
-          - not null
+          - not_null
       - name: approved_positions
         description: The number of positions that were created as a result of the LMIA's submitted
         tests:
-          - not null
+          - not_null
   - name: mart_approved_by_employer
     description: view of how many total lmia applications and jobs were accepted
     columns:
       - name: employer
         description: The name of the employer
+        tests:
+          - unique
       - name: approved_lmias
         description: The sum of all lmias approved by the employer
       - name: approved_positions
@@ -42,6 +66,8 @@ models:
     columns:
       - name: province
         description: the name of the province
+        tests:
+          - unique
       - name: approved_lmias
         description: The sum of all lmias approved by the employer
       - name: approved_positions
@@ -49,13 +75,11 @@ models:
   - name: mart_approved_by_quarter
     description: view of how many applications are approved by quarter
     columns:
-      - name: quarter
+      - name: period
         description: The quarter
+        tests:
+          - unique
       - name: approved_lmias
         description: The sum of all lmias approved by the employer
       - name: approved_positions
-        description: The sum of all positions that were approved
-    
-  
-
-    
+        description: The sum of all positions that were approved  
