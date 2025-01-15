@@ -40,6 +40,8 @@ Finally I visualized the data in looker
 
 ![image](ref/look2.png)
 
+![image](ref/look3.png)
+
 ## Analysis
 Finally these are a few views that detail some summary data on the LMIA applications. LMIA's are roughly correlated to the amount of population in each of the provinces. Ontario and Quebec being the most populated, have the most applications and jobs.
 
