@@ -10,7 +10,7 @@ I extracted the data from the statistics Canada website which is available to th
 
 I transferred the files from the website to our local drive then to a  Google Cloud storage bucket. 
 
-![image](storage.png)
+![image](ref/storage.png)
 
 The DAG was setup to normalize the input data and prepare it for Big Query. Data was then loaded via the GcsToBigQueryOperator.
 
@@ -36,9 +36,9 @@ generated the reference graphs
 
 Finally I visualized the data in looker
 
-![image](look1.png)
+![image](ref/look1.png)
 
-![image](look2.png)
+![image](ref/look2.png)
 
 ## Analysis
 Finally these are a few views that detail some summary data on the LMIA applications. LMIA's are roughly correlated to the amount of population in each of the provinces. Ontario and Quebec being the most populated, have the most applications and jobs.
@@ -71,11 +71,11 @@ Finally these are a few views that detail some summary data on the LMIA applicat
 
 ## Architecture
 
-![image](lmia_summary.png)
+![image](ref/lmia_summary.png)
 
 This is the DBT flow diagram that details how the transofrmation layer managed the data
 
-![image](dbt-dag.png)
+![image](ref/dbt-dag.png)
 
 ## Things I would Add
 
