@@ -1,0 +1,7 @@
+substitutions:
+  _REPO_NAME: '-'
+
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'test-storage-bucket-22/dbt', '.' ]
+images: [ 'test-storage-bucket-22/dbt' ]
