@@ -32,27 +32,29 @@ def load_files():
                             'Approved Positions': 'approved_positions'})
         .assign(period = "2024-Q"+ str(quarter))
                 .to_csv(bucket + f'transformed_csv/lmia_q{quarter}.csv', index = False))
-
-    def load_tg():
-        with TaskGroup('load_data') as raw:
-            for quarter in range(1,4):
-                get_raw = get_raw_file.override(task_id = f'get_raw_q{quarter}')(quarter)
-                load_csv_to_bq = GCSToBigQueryOperator(
-                    task_id = f"load_csv_to_bq_q{quarter}",
-                    bucket = Variable.get('test_gs_bucket'),
-                    source_objects = f'transformed_csv/lmia_q{quarter}.csv',
-                    destination_project_dataset_table = 'lmia.lmia_applications_raw',
-                    source_format = 'csv',
-                    write_disposition = 'WRITE_APPEND',
-                    autodetect = True # being explicit here although this is true by default as per docs
-                )
-                get_raw  >> load_csv_to_bq
+    
     run_dbt = CloudRunExecuteJobOperator(
         task_id = "run-dbt",
         project_id = "durable-bond-447600-a5",
         region = "us-central1",
         job_name = "dbt-run"
     )
-    load_tg >> run_dbt
+
+    with TaskGroup('load_data') as raw:
+        for quarter in range(1,4):
+            get_raw = get_raw_file.override(task_id = f'get_raw_q{quarter}')(quarter)
+            load_csv_to_bq = GCSToBigQueryOperator(
+                task_id = f"load_csv_to_bq_q{quarter}",
+                bucket = Variable.get('test_gs_bucket'),
+                source_objects = f'transformed_csv/lmia_q{quarter}.csv',
+                destination_project_dataset_table = 'lmia.lmia_applications_raw',
+                source_format = 'csv',
+                write_disposition = 'WRITE_APPEND',
+                autodetect = True # being explicit here although this is true by default as per docs
+            )
+            get_raw  >> load_csv_to_bq
+        run_dbt.set_downstream('raw')
+
+    
 
 load_files() 
