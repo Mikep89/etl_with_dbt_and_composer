@@ -74,7 +74,8 @@ Finally these are a few views that detail some summary data on the LMIA applicat
 ![image](ref/lmia_summary.png)
 
 This is the DBT flow diagram that details how the transformation layer managed the data
-
+![image](ref/composer_1.png)
+![image](ref/composer_2.png)
 ![image](ref/dbt-dag.png)
 
 ## Things I would Add
