@@ -6,6 +6,7 @@ from airflow.utils.task_group import TaskGroup
 from airflow import DAG
 from airflow.decorators import task, dag
 from airflow.providers.google.cloud.transfers.gcs_to_bigquery import GCSToBigQueryOperator
+from airflow.providers.google.cloud.operators.cloud_run import CloudRunExecuteJobOperator
 
 
 DBT_PROJECT_PATH = Variable.get('dbt-lmia-path')
@@ -45,10 +46,8 @@ def load_files():
                 autodetect = True # being explicit here although this is true by default as per docs
             )
             get_raw  >> load_csv_to_bq
-        @task.bash
-        def run_dbt():
-            return f"cd {DBT_PROJECT_PATH} & . env/bin/activate & dbt debug & dbt run"
-        
-        run_dbt
+        run_dbt = CloudRunExecuteJobOperator(
+            project_id = ""
 
+        )
 load_files() 
