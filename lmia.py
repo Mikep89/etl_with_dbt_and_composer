@@ -7,6 +7,7 @@ from airflow import DAG
 from airflow.decorators import task, dag
 from airflow.providers.google.cloud.transfers.gcs_to_bigquery import GCSToBigQueryOperator
 
+
 DBT_PROJECT_PATH = Variable.get('dbt-lmia-path')
 DBT_PROFILE_PATH = Variable.get('dbt-profile-path')
 GCP_CREDENTIAL = Variable.get('gcp-credential-location')
@@ -44,5 +45,10 @@ def load_files():
                 autodetect = True # being explicit here although this is true by default as per docs
             )
             get_raw  >> load_csv_to_bq
+        @task.bash
+        def run_dbt():
+            return f"cd {DBT_PROJECT_PATH} & . env/bin/activate & dbt run"
+        
+        run_dbt
 
 load_files() 
