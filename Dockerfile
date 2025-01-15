@@ -15,7 +15,7 @@ WORKDIR /app
 COPY --chown=dbtuser:dbtuser . /app
 
 # Install the project dependencies
-RUN poetry install --only main --no-root
+RUN pip install dbt-core dbt-bigquery
 
 WORKDIR /app/dbt
 
