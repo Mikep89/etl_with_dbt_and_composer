@@ -47,7 +47,7 @@ def load_files():
             get_raw  >> load_csv_to_bq
         @task.bash
         def run_dbt():
-            return f"cd {DBT_PROJECT_PATH} & . env/bin/activate & dbt run"
+            return f"cd {DBT_PROJECT_PATH} & . env/bin/activate & dbt debug & dbt run"
         
         run_dbt
 
