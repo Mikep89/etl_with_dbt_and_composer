@@ -4,10 +4,10 @@ Pipeline using Google cloud related technologies in order to load and review int
 ## Extraction
 Files were extracted manually from the statistics canada website where they are freely available to the public.
 
-For the sake of simplicity only the 3 quarters of the last fiscal year were selected.
+For the sake of simplicity only the first 3 quarters of 2024 were used.
 
 ## Loading
-Files were saved from the local drive into a Google Cloud storage bucket. It was then lightly transformed in python and re-deposited to the storage bucket in a big-query ready format.
+Files were saved from the local drive, then into a Google Cloud storage bucket. It was then lightly transformed in python in order to fix some issues with the structure of the file and re-deposited to the storage bucket in a big-query ready format.
 
 ![image](storage.png)
 
@@ -19,7 +19,7 @@ Data was then transformed through dbt into 1 cleaned view and the following 3 vi
 2. LMIA applications by Employer
 3. LMIA applications by Quarter
 
-Once it was transformed, a full review of the columns availabe were completed and testing for available values as well as metadata was added to the columns.
+Once it was transformed, a full review of the columns availabe were completed and testing was added to the dbt job. Metadata was also completed and the documentation was generated.
 
 ## Visualization
 Finally data was visualized using looker studio
@@ -52,7 +52,8 @@ Finally these are a few views that detail some summary data on the LMIA applicat
 ![image](look1.png)
 ![image](look2.png)
 
-## Things I would Add if I had more time
+## Things I would Add
 1. Cloud Build [CI/CD]
 2. A 3rd Looker view with periodic data
 3. A new data source, Total job numbers by province by NOC Code/Employment Type
+4. add a geo type into the province view in order to build a map visual in looker
