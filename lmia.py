@@ -6,7 +6,6 @@ from airflow.utils.task_group import TaskGroup
 from airflow import DAG
 from airflow.decorators import task, dag
 from airflow.providers.google.cloud.transfers.gcs_to_bigquery import GCSToBigQueryOperator
-from airflow.providers.docker.operators.docker import DockerOperator
 
 DBT_PROJECT_PATH = Variable.get('dbt-lmia-path')
 DBT_PROFILE_PATH = Variable.get('dbt-profile-path')
@@ -31,26 +30,19 @@ def load_files():
         .assign(period = "2024-Q"+ str(quarter))
                 .to_csv(bucket + f'transformed_csv/lmia_q{quarter}.csv', index = False))
 
-    def load_data_tg():
-        with TaskGroup('load_data') as raw:
-            for quarter in range(1,4):
-                get_raw = get_raw_file.override(task_id = f'get_raw_q{quarter}')(quarter)
-                load_csv_to_bq = GCSToBigQueryOperator(
-                    task_id = f"load_csv_to_bq_q{quarter}",
-                    bucket = Variable.get('test_gs_bucket'),
-                    source_objects = f'transformed_csv/lmia_q{quarter}.csv',
-                    destination_project_dataset_table = 'lmia.lmia_applications_raw',
-                    source_format = 'csv',
-                    write_disposition = 'WRITE_APPEND',
-                    autodetect = True # being explicit here although this is true by default as per docs
-                )
-                get_raw  >> load_csv_to_bq
 
-    dbt = DockerOperator(
-        task_id = 'run_dbt',
-        image = "mikepineau89/dbt-run",
-    )
-        
-    load_data_tg >> dbt
+    with TaskGroup('load_data') as raw:
+        for quarter in range(1,4):
+            get_raw = get_raw_file.override(task_id = f'get_raw_q{quarter}')(quarter)
+            load_csv_to_bq = GCSToBigQueryOperator(
+                task_id = f"load_csv_to_bq_q{quarter}",
+                bucket = Variable.get('test_gs_bucket'),
+                source_objects = f'transformed_csv/lmia_q{quarter}.csv',
+                destination_project_dataset_table = 'lmia.lmia_applications_raw',
+                source_format = 'csv',
+                write_disposition = 'WRITE_APPEND',
+                autodetect = True # being explicit here although this is true by default as per docs
+            )
+            get_raw  >> load_csv_to_bq
 
-load_files()
+load_files() 
