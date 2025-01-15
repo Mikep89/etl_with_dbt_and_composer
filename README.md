@@ -40,6 +40,9 @@ Finally I visualized the data in looker
 
 ![image](look2.png)
 
+## Analysis
+Finally these are a few views that detail some summary data on the LMIA applications. LMIA's are roughly correlated to the amount of population in each of the provinces. Ontario and Quebec being the most populated, have the most applications and jobs.
+
 ## Tech Stack
 
 1. GCP Cloud Composer
@@ -73,9 +76,6 @@ Finally I visualized the data in looker
 This is the DBT flow diagram that details how the transofrmation layer managed the data
 
 ![image](dbt-dag.png)
-
-## Analysis
-Finally these are a few views that detail some summary data on the LMIA applications. LMIA's are roughly correlated to the amount of population in each of the provinces. Ontario and Quebec being the most populated, have the most applications and jobs.
 
 ## Things I would Add
 
