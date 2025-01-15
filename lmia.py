@@ -3,10 +3,9 @@ import pendulum
 
 from airflow.models import Variable
 from airflow.utils.task_group import TaskGroup
-from airflow import DAG
 from airflow.decorators import task, dag
 from airflow.providers.google.cloud.transfers.gcs_to_bigquery import GCSToBigQueryOperator
-from airflow.providers.google.cloud.operators.cloud_run import CloudRunExecuteJobOperator
+
 
 
 DBT_PROJECT_PATH = Variable.get('dbt-lmia-path')
@@ -33,12 +32,7 @@ def load_files():
         .assign(period = "2024-Q"+ str(quarter))
                 .to_csv(bucket + f'transformed_csv/lmia_q{quarter}.csv', index = False))
     
-    run_dbt = CloudRunExecuteJobOperator(
-        task_id = "run-dbt",
-        project_id = "durable-bond-447600-a5",
-        region = "us-central1",
-        job_name = "dbt-run"
-    )
+    
 
     with TaskGroup('load_data') as raw:
         for quarter in range(1,4):
@@ -53,7 +47,7 @@ def load_files():
                 autodetect = True # being explicit here although this is true by default as per docs
             )
             get_raw  >> load_csv_to_bq
-        run_dbt.set_downstream('raw')
+        
 
     
 
