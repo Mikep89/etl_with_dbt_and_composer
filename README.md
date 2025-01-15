@@ -36,10 +36,8 @@ generated the reference graphs
 
 Finally I visualized the data in looker
 
-![image](ref/look1.png)
-
 ![image](ref/look2.png)
-
+![image](ref/look1.png)
 ![image](ref/look3.png)
 
 ## Analysis
@@ -75,7 +73,7 @@ Finally these are a few views that detail some summary data on the LMIA applicat
 
 ![image](ref/lmia_summary.png)
 
-This is the DBT flow diagram that details how the transofrmation layer managed the data
+This is the DBT flow diagram that details how the transformation layer managed the data
 
 ![image](ref/dbt-dag.png)
 
