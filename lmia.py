@@ -14,6 +14,7 @@ DBT_PROFILE_PATH = Variable.get('dbt-profile-path')
 GCP_CREDENTIAL = Variable.get('gcp-credential-location')
 
 @dag(dag_id = 'process_lmia',
+     description= "DAG to load and process lmia application data",
 start_date = pendulum.datetime(2025,1,12,tz='UTC'),
 schedule = "@once")
 def load_files():
