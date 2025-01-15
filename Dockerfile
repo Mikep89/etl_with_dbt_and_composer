@@ -1,23 +1,6 @@
-# Use Python 3.11 as the base image
-FROM python:3.11
+FROM python:3.11-slim
 
-# Install Poetry
-RUN pip install poetry
+RUN apt-get update & apt install --yes --no-install-recommends git & pip install dbt-core dbt-bigquery
 
-# Create a new user and switch to that user
-RUN useradd -m dbtuser
-USER dbtuser
-
-# Set the working directory in the Docker container
 WORKDIR /app
-
-# Copy the project files into the Docker container
-COPY --chown=dbtuser:dbtuser . /app
-
-# Install the project dependencies
-RUN pip install dbt-core dbt-bigquery
-
-WORKDIR /app/dbt
-
-# Set the command to run when the Docker container starts
-CMD ["poetry", "run", "dbt", "run"]
+ENTRYPOINT [ "dbt", "run" ]
