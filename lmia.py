@@ -48,6 +48,7 @@ def load_files():
                 )
                 get_raw  >> load_csv_to_bq
     run_dbt = CloudRunExecuteJobOperator(
+        task_id = "run-dbt",
         project_id = "durable-bond-447600-a5",
         region = "us-central1",
         job_name = "dbt-run"
