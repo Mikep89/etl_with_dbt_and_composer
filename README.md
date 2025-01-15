@@ -12,7 +12,7 @@ I transferred the files from the website to our local drive then to a  Google Cl
 
 ![image](storage.png)
 
-The DAG was setup to normalize the input data and prepare it for Big Query. Data was then loaded via the Gcs_To_BigQuery operator.
+The DAG was setup to normalize the input data and prepare it for Big Query. Data was then loaded via the GcsToBigQueryOperator.
 
 ## Transform
 
