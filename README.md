@@ -86,3 +86,5 @@ This is the DBT flow diagram that details how the transofrmation layer managed t
 3. A new data source, Total job numbers by province by NOC Code/Employment Type
 
 4. add a geo type into the province view and build a map visual in looker
+
+5. Use the DBT Seed instead of the current ingestion method
